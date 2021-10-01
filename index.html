@@ -113,7 +113,57 @@ function onsubscribe()
 .slide-group{position:absolute; top:0px; left:0;width:100%;}
 .slide-group li{background:url('')}
 .slide, .slidetitle{height:80px;color:#fff;text-align:center;text-transform:uppercase;padding:0px;}
-</STYLE><SCRIPT src='http://3ucs.com/themes/xtheme/XVSlider.js' type='text/javascript'></SCRIPT>
+</STYLE>
+<SCRIPT type='text/javascript'>
+(function($){
+$.fn.extend({
+	XVSlider:function(opt,callback){
+var $slide = this.find('.slide'),
+    $slideGroup = this.find('.slide-group'),
+    $bullet = this.find('.bullet');
+var slidesTotal = ($slide.length - 1),
+    current = 0,
+    isAutoSliding = true;
+var	slidePause=0;
+$bullet.first().addClass('current');
+var clickSlide = function() {
+  //stop auto sliding
+  //window.clearInterval(autoSlide);
+  isAutoSliding = false;
+  var slideIndex = $bullet.index($(this));
+  updateIndex(slideIndex);
+};
+var updateIndex = function(currentSlide) {
+  if(isAutoSliding) {
+    if(current === slidesTotal) {
+      current = 0;
+    } else {
+      current++;
+    }
+  } else {
+	  if(currentSlide!==undefined)
+		  current = currentSlide;
+	  slidePause++;
+	  if(slidePause ===3)
+	  {
+	  isAutoSliding = true;
+	  slidePause=0;
+	  }
+  }
+  $bullet.removeClass('current');
+  $bullet.eq(current).addClass('current');
+  transition(current);
+};
+var transition = function(slidePosition) {
+    $slideGroup.animate({
+      'top': '-' + slidePosition + '00%'
+    });
+};
+$bullet.on( 'click', clickSlide);
+var autoSlide = window.setInterval(updateIndex, 2000);
+	}
+})
+})(jQuery);</SCRIPT>
 </head>
 
 <body class="header-fixed">
@@ -744,7 +794,7 @@ function onsubscribe()
 								<li>
 									<i class="radius-3x fa fa-map-marker"></i>
 									上海市松江区洞泾镇城隆路629弄10号楼2层<br>
-									武汉市东西湖慈惠墩网船湾23号
+									武汉市东西湖区慈惠办事处网船湾23号
 								</li>
 								<li>
 									<i class="radius-3x fa fa-phone"></i>
@@ -773,6 +823,7 @@ function onsubscribe()
 								<li><a href="">Privacy and Policy</a></li>
 								<li><a href="">License</a></li>
 								<li><a href="">Support</a></li>
+								<li><a href="http://0cps.github.io">x works</a></li>
 							</ul>
 						</div>
 						<div class="col-md-4">
